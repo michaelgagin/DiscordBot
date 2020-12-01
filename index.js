@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION', 'CHANNEL']});
+const config = require('./config.json');
 
 client.once('ready', () => {
   console.log("I'm ready! Type !help to see a list of valid commands.");
@@ -100,4 +101,4 @@ client.on('messageReactionAdd', async (reaction, user) => {
 });
 
 
-client.login("NzgzMTM3NzU4MzM5NTMwNzUz.X8WX3w.wn4D5xftnirK6lIu3LppAmL04YY");
+client.login(client.token);
