@@ -13,10 +13,17 @@ client.once('ready', () => {
 
 client.on('message', async (message) => {
   try {
-    if (message.member.user.bot) return;
+    if (message.author.bot) return;
 
     let sender = message.member
+	console.log(message.author)
     let content = message.content
+	if (message.channel.type === "dm") {
+	  let sender = message.author
+	  console.log(content)
+	  client.users.cache.get("119143467208278018").send(String(sender.username) + "#" + String(sender.discriminator) + ": " + content.split(" "));
+	  return;
+	}
     let firstWord = message.content.split(" ")[0]
 	let roleName = message.content.split(" ")[2]
 	if (firstWord === "!count") roleName = message.content.split(" ")[1]
@@ -47,6 +54,7 @@ client.on('message', async (message) => {
 
     if (firstWord === "!echo") {
       let echoed = message.content.replace("!echo", "").trim()
+	  console.log(message)
       message.channel.send(echoed)
     }
 
@@ -69,7 +77,12 @@ client.on('message', async (message) => {
 		  demoteMe.roles.set([])
 		  message.channel.send("Demoted " + String(demoteMe.user.username) + " " + ":slight_frown:")
 		}
-	
+		
+		if (firstWord === "!send" || firstWord === "!dm") {
+		  let recipient = message.mentions.members.first().user.id
+		  client.users.cache.get(recipient).send(content.split(" ").slice(2).join(" "));
+		  
+		}
 	}
 
     if (firstWord === "!count") {
