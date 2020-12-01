@@ -13,8 +13,22 @@ client.on('message', async (message) => {
     // let sender = message.member
     let content = message.content
     let firstWord = message.content.split(" ")[0]
+	let roleName = message.content.split(" ")[2]
     console.log(content)
     console.log(firstWord)
+	console.log(roleName)
+	let role = ""
+	
+	if (roleName === "momo" || roleName === "Momo") {
+	  role = "783195799701028874"
+	  roleName = "Momo"
+	  console.log(role)
+	}
+	else if (roleName === "weeb" || roleName === "Weeb" || roleName === "ayaya") {
+	  role = "783369539735912478"
+	  roleName = "Weeb"
+	  console.log(role)
+	}
 
     // if (send.roles.cache.has("783147253299675156")) { //if they have role bot
     //   pass
@@ -36,11 +50,20 @@ client.on('message', async (message) => {
 
     if (firstWord === "!promote") {
       let promoteMe = message.mentions.members.first()
-      message.channel.send("Trying to promote " + String(promoteMe.user.username) + " to " + "Momo")
+      message.channel.send("Trying to promote " + String(promoteMe.user.username) + " to " + roleName)
       console.log(promoteMe.user.username)
       console.log(promoteMe)
-      promoteMe.roles.add("783195799701028874")
-      message.channel.send("Promoted " + String(promoteMe.user.username) + " to " + "Momo")
+      promoteMe.roles.add(role)
+      message.channel.send("Promoted " + String(promoteMe.user.username) + " to " + roleName)
+    }
+	
+	if (firstWord === "!demote") {
+      let demoteMe = message.mentions.members.first()
+      message.channel.send("Trying to demote " + String(demoteMe.user.username))
+      console.log(demoteMe.user.username)
+      console.log(demoteMe)
+      demoteMe.roles.set([])
+      message.channel.send("Demoted " + String(demoteMe.user.username) + " " + ":slight_frown:")
     }
 
     if (content === "!momocount") {
@@ -101,4 +124,4 @@ client.on('messageReactionAdd', async (reaction, user) => {
 });
 
 
-client.login(client.token);
+client.login(config.token);
