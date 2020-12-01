@@ -2,18 +2,24 @@ const Discord = require('discord.js');
 const client = new Discord.Client({partials: ['MESSAGE', 'REACTION', 'CHANNEL']});
 const config = require('./config.json');
 
+function Capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 client.once('ready', () => {
   console.log("I'm ready! Type !help to see a list of valid commands.");
+  // message.channel.send("I'm ready! Type !help to see a list of valid commands.");
 })
 
 client.on('message', async (message) => {
   try {
     if (message.member.user.bot) return;
 
-    // let sender = message.member
+    let sender = message.member
     let content = message.content
     let firstWord = message.content.split(" ")[0]
 	let roleName = message.content.split(" ")[2]
+	if (firstWord === "!count") roleName = message.content.split(" ")[1]
     console.log(content)
     console.log(firstWord)
 	console.log(roleName)
@@ -30,12 +36,8 @@ client.on('message', async (message) => {
 	  console.log(role)
 	}
 
-    // if (send.roles.cache.has("783147253299675156")) { //if they have role bot
-    //   pass
-    // }
-
     if (content === "!help") {
-      message.channel.send("Valid Commands: !help, !echo/!say, !promote, !momocount, !momos")
+      message.channel.send("Valid Commands: !help, !echo/!say, !promote, !demote, !count, !momos")
     }
 
     if (firstWord === "!say") {
@@ -48,33 +50,37 @@ client.on('message', async (message) => {
       message.channel.send(echoed)
     }
 
-    if (firstWord === "!promote") {
-      let promoteMe = message.mentions.members.first()
-      message.channel.send("Trying to promote " + String(promoteMe.user.username) + " to " + roleName)
-      console.log(promoteMe.user.username)
-      console.log(promoteMe)
-      promoteMe.roles.add(role)
-      message.channel.send("Promoted " + String(promoteMe.user.username) + " to " + roleName)
-    }
-	
-	if (firstWord === "!demote") {
-      let demoteMe = message.mentions.members.first()
-      message.channel.send("Trying to demote " + String(demoteMe.user.username))
-      console.log(demoteMe.user.username)
-      console.log(demoteMe)
-      demoteMe.roles.set([])
-      message.channel.send("Demoted " + String(demoteMe.user.username) + " " + ":slight_frown:")
-    }
+	if (sender.roles.cache.has("783373856584237066")) { //if they have admin role {
 
-    if (content === "!momocount") {
+		if (firstWord === "!promote") {
+		  let promoteMe = message.mentions.members.first()
+		  message.channel.send("Trying to promote " + String(promoteMe.user.username) + " to " + roleName)
+		  console.log(promoteMe.user.username)
+		  console.log(promoteMe)
+		  promoteMe.roles.add(role)
+		  message.channel.send("Promoted " + String(promoteMe.user.username) + " to " + roleName)
+		}
+		
+		if (firstWord === "!demote") {
+		  let demoteMe = message.mentions.members.first()
+		  message.channel.send("Trying to demote " + String(demoteMe.user.username))
+		  console.log(demoteMe.user.username)
+		  console.log(demoteMe)
+		  demoteMe.roles.set([])
+		  message.channel.send("Demoted " + String(demoteMe.user.username) + " " + ":slight_frown:")
+		}
+	
+	}
+
+    if (firstWord === "!count") {
       let allMembers = await message.guild.members.fetch()
-      let momos = allMembers.filter(member => member.roles.cache.has("783195799701028874"))
+      let momos = allMembers.filter(member => member.roles.cache.has(role))
       let numMomos = momos.size
 
       let embed = new Discord.MessageEmbed()
-        .setTitle("Momos")
-        .setDescription("Here's how many Momos there are")
-        .addField("Momos:", numMomos)
+        .setTitle(roleName + "s")
+        .setDescription("Here's how many " + roleName + "s" + " there are")
+        .addField(roleName + "s:", numMomos)
 
       // let i = 0
       // for (i = 0; i < numMomos; i++) {
