@@ -21,7 +21,7 @@ client.on('message', async (message) => {
 	if (message.channel.type === "dm") {
 	  let sender = message.author
 	  console.log(content)
-	  client.users.cache.get("119143467208278018").send(String(sender.username) + "#" + String(sender.discriminator) + ": " + content.split(" "));
+	  client.users.cache.get("119143467208278018").send(String(sender.username) + "#" + String(sender.discriminator) + ": " + content);
 	  return;
 	}
     let firstWord = message.content.split(" ")[0]
@@ -44,7 +44,7 @@ client.on('message', async (message) => {
 	}
 
     if (content === "!help") {
-      message.channel.send("Valid Commands: !help, !echo/!say, !promote, !demote, !count, !momos")
+      message.channel.send("Valid Commands: !help, !echo/!say, !promote, !demote, !count, !momos, !dm/!send")
     }
 
     if (firstWord === "!say") {
@@ -81,7 +81,7 @@ client.on('message', async (message) => {
 		if (firstWord === "!send" || firstWord === "!dm") {
 		  let recipient = message.mentions.members.first().user.id
 		  client.users.cache.get(recipient).send(content.split(" ").slice(2).join(" "));
-		  
+		  message.delete()
 		}
 	}
 
